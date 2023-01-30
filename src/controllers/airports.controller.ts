@@ -37,9 +37,6 @@ export async function postAirport(req: Request, res: Response) {
     const newAirport = await airportsService.insertAirport(airportData);
     res.status(httpStatus.CREATED).send(newAirport);
   } catch (error) {
-    if (error.name === 'NoAirlineCompanyIdError') {
-      return res.status(httpStatus.BAD_REQUEST).send({});
-    }
     return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }

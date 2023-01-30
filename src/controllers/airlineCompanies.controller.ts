@@ -44,9 +44,6 @@ export async function postAirlineCompany(req: Request, res: Response) {
       await airlineCompaniesService.insertAirlineCompany(airlineCompaniesData);
     res.status(httpStatus.CREATED).send(newAirlineCompany);
   } catch (error) {
-    if (error.name === 'NoAirlineCompanyIdError') {
-      return res.status(httpStatus.BAD_REQUEST).send({});
-    }
     return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }
