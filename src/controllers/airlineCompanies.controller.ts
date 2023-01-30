@@ -8,7 +8,7 @@ export async function getAllAirlineCompanies(req: Request, res: Response) {
   const { flights } = req.query as Record<string, string>;
   try {
     const airlineCompanies = await airlineCompaniesService.allAirlineCompanies(
-      !!flights
+      flights.toLowerCase() === 'true' && true
     );
     res.send(airlineCompanies);
   } catch (error) {
