@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model airlineCompanies {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(100)
+  acronym String    @unique @db.VarChar(3)
+  flights flights[]
+}
+
+model airports {
+  id                                           Int       @id @default(autoincrement())
+  name                                         String    @db.VarChar(100)
+  acronym                                      String    @unique @db.VarChar(3)
+  flights_flights_arrivalAirportIdToairports   flights[] @relation("flights_arrivalAirportIdToairports")
+  flights_flights_departureAirportIdToairports flights[] @relation("flights_departureAirportIdToairports")
+}
+
+model flights {
+  id                                            Int              @id @default(autoincrement())
+  acronym                                       String           @db.VarChar(3)
+  airlineCompanyId                              Int
+  departureAirportId                            Int
+  departureTime                                 DateTime
+  arrivalAirportId                              Int
+  arrivalTime                                   DateTime
+  airlineCompanies                              airlineCompanies @relation(fields: [airlineCompanyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  airports_flights_arrivalAirportIdToairports   airports         @relation("flights_arrivalAirportIdToairports", fields: [arrivalAirportId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  airports_flights_departureAirportIdToairports airports         @relation("flights_departureAirportIdToairports", fields: [departureAirportId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
